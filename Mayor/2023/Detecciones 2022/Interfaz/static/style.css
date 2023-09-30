@@ -1,7 +1,13 @@
+body{
+  background-color: rgb(0, 11, 51);
+}
+
 #video {
-    margin: 0 auto;
-width: 300px;
-display: block;
+  margin: 0 auto;
+  width: 800px;
+  display: block;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 #stop {
@@ -25,6 +31,7 @@ display: block;
   opacity: 0;
   width: 0;
   height: 0;
+  
 }
 
 .slider {
@@ -64,6 +71,7 @@ input:checked + .slider:before {
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
+
 #container {
   display: flex;
   justify-content: center;

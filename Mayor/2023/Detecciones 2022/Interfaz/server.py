@@ -2,26 +2,18 @@ from flask import *
 import cv2
 import numpy as np
 from tkinter import *
+from flask_socketio import *
 
 
 cap = cv2.VideoCapture(0)
 detector = cv2.QRCodeDetector()
 
-datos = ""
 
-def mensaje():
-    global datos,data
+dato = ""
 
-    if not(datos == data):
-        carcasa = Tk()
-        carcasa.title("Mensaje:")
-        carcasa.geometry("250x100")
-        Label(carcasa, text=data).pack(expand=1)
-        carcasa.mainloop()
-    datos = data
 
 def generar():
-    global data
+    global dato
     while True:
         _, frame = cap.read()
         # get bounding box coords and data
@@ -36,8 +28,9 @@ def generar():
             cv2.putText(frame, data, (bb_pts[0][0], bb_pts[0][1] - 10), cv2.FONT_HERSHEY_SIMPLEX,
                         0.5, (0, 255, 0), 2)
             if data:
-                print(data)
-                mensaje()
+                if not(dato == data):
+                    socketio.emit('dato', data)
+                dato=data
         (flag, encodeimage) = cv2.imencode(".jpg",frame)
         if not flag:
             continue
@@ -47,6 +40,8 @@ def generar():
         
 app = Flask(__name__)
 
+app.config['SECRET_KEY'] = 'secret'
+socketio = SocketIO(app)
 
 @app.route('/')
 def index():
@@ -56,6 +51,7 @@ def index():
 def video():
     return Response(generar(),
                     mimetype="multipart/x-mixed-replace; boundary=frame")
+
 
 if __name__ == "__main__":
     app.run(debug=False)

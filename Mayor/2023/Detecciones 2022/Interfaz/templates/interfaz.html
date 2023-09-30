@@ -14,31 +14,66 @@
   </ul>
   {% endif %}
   {% endwith %}
-  <img id="video" src="{{url_for('video')}}">
+  
 
-  <button id="stop">Paro</button>
+  
 
   <div id="container">
-    <label class="switch">
-      <input type="checkbox">
-      <span class="slider"></span>
-    </label>
+    <div class="paro">
+      <button id="stop">Alto</button>
+    </div>
+
+    <div class="video">
+      <img id="video" src="https://img.directindustry.es/images_di/photo-mg/223464-15805788.jpg">
+      <div style="color: white;" id="resultado"></div>
+    </div>
+    
+<div class="cont">
+  <label class="switch">
+      <input type="checkbox" id="check1" onclick="cambiarImagenJS()">
+      <span class="slider" ></span>
+    </label> <br><br>
     
     <label class="switch">
       <input type="checkbox">
       <span class="slider"></span>
-    </label>
+    </label> <br><br>
 
     <label class="switch">
       <input type="checkbox">
       <span class="slider"></span>
-    </label>
+    </label> <br><br>
 
     <label class="switch">
       <input type="checkbox">
       <span class="slider"></span>
-    </label>
+    </label><br><br>
   </div>
+</div>
+<script>
 
+  function cambiarImagenJS(){
+    var checkBox = document.getElementById("check1");
+  // Get the output text
+
+  // If the checkbox is checked, display the output text
+  if (checkBox.checked == true){
+    document.getElementById("video").src="{{url_for('video')}}";
+  } else {
+    document.getElementById("video").src="https://img.directindustry.es/images_di/photo-mg/223464-15805788.jpg";
+  }
+  }
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8">
+    var socket = io();
+    socket.on('dato', function(datos) {
+      document.getElementById("resultado").innerHTML = "<p>"+datos+"</p>";
+        console.log(datos);
+    });
+</script>
+    
 </body>
 </html>
